@@ -3,6 +3,13 @@ import StarPNG from '../../assets/star.png';
 
 let cameraZ = 0;
 let warpSpeed = 0;
+let speed = 0;
+
+const starAmount = 1000;
+const fov = 20;
+const baseSpeed = 0.025;
+const starStretch = 5;
+const starBaseSize = 0.05;
 
 export interface StarProps {
     sprite: Sprite;
@@ -86,13 +93,6 @@ export default class Star {
         // this.app.stage.hitArea = this.app.screen;
         // console.log(">>>>>stage:", this.app.stage.width, this.app.stage.height);
         const starTexture = await Assets.load("pkg1-star");
-        const starAmount = 1000;
-        
-        const fov = 20;
-        const baseSpeed = 0.025;
-        let speed = 0;
-        const starStretch = 5;
-        const starBaseSize = 0.05;
 
         // Create the stars
         const stars: any[] = [];
@@ -128,7 +128,6 @@ export default class Star {
         
                     // Map star 3d position to 2d with really simple projection
                     const z = star.z - cameraZ;
-        
                     star.sprite.x = star.x * (fov / z) * this.app!.renderer.screen.width + this.app!.renderer.screen.width / 2;
                     star.sprite.y = star.y * (fov / z) * this.app!.renderer.screen.width + this.app!.renderer.screen.height / 2;
         
