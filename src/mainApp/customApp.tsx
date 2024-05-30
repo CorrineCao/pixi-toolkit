@@ -153,7 +153,15 @@ export default class CustomApp {
         const appHeight = 600;
         this.app = new Application();
         (globalThis as any).__PIXI_APP__ = this.app;
-        await this.app.init({ width: appWidth, height: appHeight, preference: 'webgpu', resizeTo: this.domElement });
+        await this.app.init({
+            width: appWidth, 
+            height: appHeight, 
+            preference: 'webgpu', 
+            resizeTo: this.domElement,
+            antialias: true,
+            backgroundColor: 'white',
+            // useBackBuffer: true, // for webgl
+         });
         this.domElement.appendChild(this.app.canvas);
 
         this.app.ticker.minFPS = 30;
@@ -164,6 +172,7 @@ export default class CustomApp {
         // event function 1
         // this.app.stage.interactive = true;
         this.app.stage.eventMode = "static";
+        // this.app.stage.hitArea = this.app.screen;
         // console.log(">>>>>stage:", this.app.stage.width, this.app.stage.height);
         this.app?.stage.on("pointerdown", this.pointDown);
         // this.app?.stage.on("mousemove", this.pointMove);
@@ -208,6 +217,7 @@ export default class CustomApp {
         newSprite2.label = "testSprite";
         newSprite2.position.x = 10;
         newSprite2.position.y = 10;
+        newSprite2.tint = Math.random() * 0x808080;
         group.addChild(newSprite2);
         const curSprite = group.getChildByName("testSprite");
         console.log(">>>>>curSprite:", curSprite);

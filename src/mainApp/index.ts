@@ -1,4 +1,4 @@
-import CustomApp from "./customApp";
-// import TestApp from "./testApp";
+import Star from "./star";
+// import CustomApp from "./customApp";
 
-export default CustomApp;
+export default Star;
