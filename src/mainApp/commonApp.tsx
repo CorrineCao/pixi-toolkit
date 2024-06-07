@@ -3,7 +3,8 @@ import AlarmCenterPNG from '../../assets/alarmCenter.png';
 import { BaseSprite } from "../Component/BaseSprite";
 import { MySprite } from "../Component/MySprite";
 
-export default class CustomApp {
+
+export default class CommonApp {
     private domElement: HTMLElement;
     private app: Application | null = null;
     // private stage: any;
