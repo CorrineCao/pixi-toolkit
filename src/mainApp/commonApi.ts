@@ -8,5 +8,20 @@ export default class CommonApi {
     }
 
     // 调用公共方法
-    // create
+    updateScale = (
+        scaleFlag: string,
+        option?: {
+            wheelOrigin?: {
+                x: number;
+                y: number;
+            };
+            scaleValue?: number;
+            needInitPosition: boolean,
+            isCheck: boolean,
+            cbk?: () => void;
+        }
+    ) => {
+        const oldScale = this.commonApp?.getStage()?.scale.x;
+        console.log("scaleFlag", scaleFlag , oldScale);
+    }
 }

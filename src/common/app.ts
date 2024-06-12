@@ -3,6 +3,15 @@ export const APP_CONST = {
     baseScale: 50,
 };
 
+/**
+ * 原始比例 放大 缩小
+ */
+export const ScaleType: Record<MainAppNPS.ScaleTypeType, MainAppNPS.ScaleTypeType> = {
+  zoomIn: 'zoomIn',
+  zoomOut: 'zoomOut',
+  fit: 'fit',
+};
+
 
 /**操作模式 */
 export const CommonOperationMode = {

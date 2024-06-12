@@ -1,4 +1,4 @@
-import { Assets, Texture, Container, Application, Graphics } from "pixi.js";
+import { Assets, Texture, Container, Application, Graphics, Point } from "pixi.js";
 import AlarmCenterPNG from '../../assets/alarmCenter.png';
 import { BaseSprite } from "../Component/BaseSprite";
 import { MySprite } from "../Component/MySprite";
@@ -25,6 +25,7 @@ export default class CommonApp {
     };
     private commonEvent: CommonEvent | null = null;
     private commonApi: CommonApi | null = null;
+    private mousePosition: Point = new Point(0, 0);
 
     constructor(options: {
         domElement: HTMLElement;
@@ -58,6 +59,15 @@ export default class CommonApp {
     destoryAll = () => {
         this.getCommonEvent()?.destoryEvent();
     }
+
+    getDomElement = () => {
+        return this.domElement;
+    }
+
+    /**接口 - 获取当前鼠标所在的位置 */
+    getMousePosition = () => {
+        return this.mousePosition;
+    };
 
     // 后台加载
     private async doBkgLoad() {
@@ -97,15 +107,15 @@ export default class CommonApp {
     private async initApp () {
         this.app = new Application();
         await this.app.init({
-            width: this.domElement.clientWidth,
-            height: this.domElement.clientHeight,
+            width: this.getDomElement().clientWidth,
+            height: this.getDomElement().clientHeight,
             preference: 'webgpu', 
-            resizeTo: this.domElement,
+            resizeTo: this.getDomElement(),
             antialias: true,
             // backgroundColor: 'white',
             // useBackBuffer: true, // for webgl
          });
-        this.domElement.appendChild(this.app.canvas);
+         this.getDomElement().appendChild(this.app.canvas);
         (globalThis as any).__PIXI_APP__ = this.app;
         this.app.ticker.minFPS = 30;
         this.app.ticker.maxFPS = 60;

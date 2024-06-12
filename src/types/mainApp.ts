@@ -8,6 +8,8 @@ declare namespace MainAppNPS {
 
     export type ModeType = 'commonView' | 'commonEdit';
 
+    export type ScaleTypeType = 'zoomIn' | 'zoomOut' | 'fit';
+
     export interface SettingsType {
         appId: string; // 应用ID
         mode: ModeType; // 全局模式

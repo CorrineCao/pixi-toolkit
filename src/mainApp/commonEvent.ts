@@ -1,5 +1,6 @@
 import { FederatedPointerEvent, FederatedWheelEvent, Point, Sprite } from "pixi.js";
 import CommonApp from "./commonApp";
+import { ScaleType } from "../common/app";
 
 /**
  * 事件
@@ -28,7 +29,9 @@ export default class CommonEvent {
         commonStage.on("pointerout", this.onPointerout);
         commonStage.on("rightdown", this.onRightDown);
         commonStage.on("rightup", this.onRightUp);
-        commonStage.on("wheel", this.onMouseWheel);
+        // commonStage.on("wheel", this.onMouseWheel);
+        // commonStage.on('wheelcapture', this.onMouseWheel);
+        this.onMouseWheel();
     }
   }
 
@@ -60,11 +63,8 @@ export default class CommonEvent {
   private onMouseMove = (event: FederatedPointerEvent) => {
     const stage = this.commonApp.getStage();
     if(stage) {
-      console.log("stage globalmousemove 4", event.getLocalPosition(stage));
+      // console.log("stage globalmousemove 4", event.getLocalPosition(stage));
     }
-    // console.log("stage globalmousemove 1", event.target);
-    // console.log("stage globalmousemove 2", event.global);
-    // console.log("stage globalmousemove 3", event.x, event.y);
   };
   
   private onMouseUp = (event: FederatedPointerEvent) => {
@@ -89,7 +89,33 @@ export default class CommonEvent {
   private onRightUp = (event: FederatedPointerEvent) => {
   };
 
-  private onMouseWheel = (event: FederatedWheelEvent) => {
-    console.log(">>>>>wheel:", event);
+  // private onMouseWheel = (event: FederatedWheelEvent) => {
+  //   console.log(">>>>>wheel:", event);
+  // };
+
+  onMouseWheel = () => {
+    this.commonApp?.getDomElement().addEventListener('wheel', (event: any) => {
+      event.preventDefault();
+      const commonApi = this.commonApp.getCommonApi();
+      if(!commonApi) {
+        return;
+      }
+      // const switchInfo = this.mapApp.getBaseCommonMap().getSwitchInfo();
+      // if(switchInfo?.closeScale) {
+      //   return;
+      // }
+      if (this.isOutSide) {
+        return;
+      }
+     
+      commonApi.updateScale(
+        event.wheelDelta > 0 ? ScaleType.zoomIn : ScaleType.zoomOut,
+        {
+          needInitPosition: false,
+          isCheck: false,
+          wheelOrigin: this.commonApp?.getMousePosition(),
+        }
+      );
+    });
   };
 }
