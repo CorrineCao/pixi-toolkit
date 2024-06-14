@@ -14,7 +14,7 @@ export default class CommonApi {
         this.commonApp = commonApp;
     }
 
-      /** 接口 - 注册监听 */
+    /** 注册监听 */
     addListener = (
         type: 'endLoading' | string,
         value: (data?: Record<string, any>) => void
@@ -22,7 +22,7 @@ export default class CommonApi {
         this.baseListener[type] = value;
     };
 
-    // 调用公共方法
+    /** 调整比例 */
     updateScale = (
         scaleFlag: string,
         option?: {
