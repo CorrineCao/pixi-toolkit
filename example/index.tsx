@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import { PixiToolkit } from '../src/index';
+import CommonApp from '../src/mainApp/commonApp';
 
 
 const appId = 'testApp';
@@ -9,12 +10,17 @@ const appId = 'testApp';
 const App = () => {
   React.useEffect(() => {
 
+    const doAppInitFinish = (app: CommonApp) => {
+      console.log(">>>app", app);
+      app.getCommonApi()?.addUnitList("elements");
+    }
+    
     const initRenderApp = () => {
         const canvasDom = document.getElementById(appId) as HTMLDivElement;
-        const mainApp = new PixiToolkit.MainApp({
+        PixiToolkit.initApp({
             domElement: canvasDom,
+            doAppInitFinish
         });
-        console.log(">>>mainApp", mainApp);
       };
       initRenderApp();
 }, []);
@@ -26,9 +32,9 @@ const App = () => {
           style={{
             padding: 0,
             margin: 0,
-            background: '#444444',
-            width: '100%',
-            height: '90vh',
+            background: '#191B24',
+            width: '100vw',
+            height: '100vh',
           }}
         />
     </div>

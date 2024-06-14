@@ -1,11 +1,10 @@
-import { Assets, Texture, Container, Application, Graphics, Point } from "pixi.js";
+import { Assets, Application, Point } from "pixi.js";
 import AlarmCenterPNG from '../../assets/alarmCenter.png';
-import { BaseSprite } from "../Component/BaseSprite";
-import { MySprite } from "../Component/MySprite";
 import { CommonOperationMode } from "../common/app";
 import CommonStage from "./commonStage";
 import CommonEvent from "./commonEvent";
 import CommonApi from "./commonApi";
+import CommonGroup from "./commonGroup";
 
 export default class CommonApp {
     private domElement: HTMLElement;
@@ -26,12 +25,19 @@ export default class CommonApp {
     private commonEvent: CommonEvent | null = null;
     private commonApi: CommonApi | null = null;
     private mousePosition: Point = new Point(0, 0);
+    // 通用图层
+    private commonGroup!: CommonGroup;
+    private doAppInitFinish?: (app: CommonApp) => void;
+    // private probabilityMap!: ProbabilityMap;
+    // private bkgGroup!: BkgGroup;
 
     constructor(options: {
         domElement: HTMLElement;
+        doAppInitFinish: (app: CommonApp) => void;
     }) {
         // 基础数据
         this.domElement = options.domElement;
+        this.doAppInitFinish = options.doAppInitFinish;
         // app
         this.initAll();
     }
@@ -42,6 +48,10 @@ export default class CommonApp {
 
     getStage() {
         return this.app?.stage;
+    }
+
+    getCommonGroup() {
+        return this.commonGroup;
     }
 
     getCommonEvent() {
@@ -89,6 +99,7 @@ export default class CommonApp {
         Assets.backgroundLoadBundle(['pkg1']);
     }
 
+
     private async initAll() {
         // assets
         await this.doBkgLoad();
@@ -96,11 +107,15 @@ export default class CommonApp {
         await this.initApp();
         // stage
         CommonStage.initStage(this);
+        // commonGroup
+        this.commonGroup = new CommonGroup({ label: "commonGroup" }, this);
         // event
         this.commonEvent = new CommonEvent(this); 
         // api
         this.commonApi = new CommonApi(this);
         // this.doMask();
+        // 回调
+        this.doAppInitFinish?.(this);
     }
 
 
@@ -119,68 +134,6 @@ export default class CommonApp {
         (globalThis as any).__PIXI_APP__ = this.app;
         this.app.ticker.minFPS = 30;
         this.app.ticker.maxFPS = 60;
-    }
-
-    createGroup = () => {
-        // console.log(">>>>width, height: ", this.app?.screen.width, this.app?.screen.height);
-        // const width = (this.app?.screen.width || 0);
-        // const height = (this.app?.screen.height || 0);
-        const group = new Container();
-        group.eventMode = "passive";
-        group.visible = true;
-        this.app?.stage.addChild(group);
-        // console.log(">>>>group:", group.position, group.pivot, group.scale, group.renderable);
-        return group;
-    }
-
-    createSprite = (texture: Texture, group: Container) => {
-        const newSprite = new BaseSprite(texture);
-        newSprite.view.eventMode = "static";
-        // newSprite.view.interactive = true;
-        group.addChild(newSprite.view);
-        
-
-        console.log(">>>>createSprite 3: ");
-        // const newSprite3 = new Sprite(texture);
-        // const newSprite3 = new MySprite(texture);
-        // console.log(">>>>createSprite end, ", newSprite3);
-
-        const newSprite2 = MySprite.from(texture);
-        console.log(">>>>createSprite end, ", newSprite2);
-        newSprite2.eventMode = "static";
-        newSprite2.label = "testSprite";
-        newSprite2.position.x = 10;
-        newSprite2.position.y = 10;
-        newSprite2.tint = Math.random() * 0x808080;
-        group.addChild(newSprite2);
-        const curSprite = group.getChildByName("testSprite");
-        console.log(">>>>>curSprite:", curSprite);
-
-        // todo test
-        // newSprite2.renderable = false;
-        
-        // console.log(">>>>newSprite:", newSprite2.view);
-        // newSprite.view.addChild(newSprite2.view);
-
-        // const newSprite2 = new MySprite({texture: Texture.WHITE});
-        // // newSprite2.texture = texture;
-        // newSprite2.interactive = true;
-        // newSprite2.anchor.set(0.5, 0.5);
-        // newSprite2.width = 100;
-        // newSprite2.height = 100;
-        // newSprite2.position.x = 10;
-        // newSprite2.position.y = 10;
-        // console.log(">>>>newSprite:", newSprite2);
-        // newSprite2.addChild();
-        // group.addChild(newSprite2);
-
-        const graphics = new Graphics()
-        .rect(50, 50, 100, 100)
-        .fill(0xFF0000);
-        graphics.eventMode = "static";
-        group.addChild(graphics);
-       
-        console.log('children: ', this.app?.stage.children);
     }
 
 }

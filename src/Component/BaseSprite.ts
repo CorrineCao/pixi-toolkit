@@ -9,10 +9,10 @@ export class BaseSprite {
     constructor(texture: Texture) {
         this.view = new Sprite(texture);
         this.view.anchor.set(0.5, 0.5);
-        this.view.width = 100;
-        this.view.height = 100;
-        this.view.position.x = 200;
-        this.view.position.y = 200;
+        this.view.width = 2;
+        this.view.height = 2;
+        this.view.position.x = 0;
+        this.view.position.y = 0;
     }
    
     render(x: number, y: number) {

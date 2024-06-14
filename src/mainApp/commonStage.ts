@@ -1,6 +1,7 @@
 import { Application } from "pixi.js";
 import { APP_CONST } from "../common/app";
 import CommonApp from "./commonApp";
+import CommonGroup from "./commonGroup";
 
   /**获取舞台边界 */
 const reGetStageRange = (app: Application | null) => {
